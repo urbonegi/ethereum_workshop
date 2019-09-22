@@ -9,7 +9,7 @@
 Smart Contract using web3.js API
 
 ## Credits
-The further tutorial was based on a [Medium](https://medium.com) tutorial 
+This workshop is based on a [Medium](https://medium.com) tutorial 
 called 'A 101 Noob Intro to Programming Smart Contracts on Ethereum', which 
 was released in 2015. A lot of code examples and suggested tools were out 
 of date, however, overall tutorial structure and content is very useful and 
@@ -20,7 +20,9 @@ tutorial.
 TBC
 
 ## Prerequisites
-* Laptop with unix-based system as a best option. All environment setup 
+* General software engineering and development understanding and some 
+experience.
+* Unix-based system would be the best option. All further environment setup 
 instructions prepared and tested on Mac OS, however, it should work on any OS. 
 * Preferred IDE for Smart Contract development. You can use any IDE you like, 
 for example the one you already have installed. If you like to try something 
@@ -32,7 +34,6 @@ Installation guides bellow will assume Mac OS system. Guides for other OSs
 can be found online.
 
 ### Install nodejs
-
 Download and install latest node.js from [here](https://nodejs.org/en/download/). 
 Install nodejs by unpacking it and adding to the `PATH`.
 ```bash
@@ -47,8 +48,8 @@ $ npm version
 ```
 
 ### Create your project path
-Create your workshop tutorial directory and all further steps continue in 
-that path.
+Create your workshop tutorial directory and continue all further steps in 
+that path:
 ```bash
 mkdir ~/workshop
 cd ~/workshop
@@ -61,7 +62,7 @@ Install truffle using npm:
 ```bash
 $ npm install -g truffle
 ```
-Start truffle with default directory structure with some boilerplace code:
+Start truffle with default directory structure with some boilerplate code:
 ```bash
 $ truffle init
 ```
@@ -79,7 +80,7 @@ with your Ganache Ethereum node by pressing `Settings` button at the top
 right corner. Save the workshop workspace.
 
 ### Install MetaMask
-MetaMask is a self-hosted wallet to store, send and receive ETH and ERC20.
+MetaMask is a self-hosted wallet to store, send and receive ETH.
 Download MetaMask Chrome extension [here](https://metamask.io/).
 When installed, press `Get Started` and select `Import Wallet` option.
 Import an account by entering the mnemonic that is displayed in Ganache and
@@ -87,14 +88,16 @@ password.
 Once in the MetaMask wallet change `Main Network` at the drop down at the 
 top right corner: select `Custom RPC`. Then create new network by entering
 Ganache RPC: `http://127.0.0.1:7545`. Once saved - local testing account index 0 
-should be visible in the dashboard.
+should be visible in the dashboard. You can add other accounts to the MetaMask 
+from your Ganache dev-accounts list (first two accounts are worth adding to 
+MetaMask to best demonstrate this tutorial example). 
 
 ## Smart Contract workshop
 
 ### What the Smart Contract will do?
 TBC
 
-### Event Smart Contract code
+### EventTickets Smart Contract code
 * Create in file in contracts directory for your first Smart Contract: 
 `contracts/EventTickets.sol`. Type in code as follows:
 ```solidity
@@ -150,7 +153,7 @@ contract EventTickets {
 ```
 * Create migrations file in migrations directory: 
 `migrations/2_eventtickets_migration.js`. Type in the code as follows:
-```solidity
+```bash
 const EventTickets = artifacts.require("EventTickets");
 
 module.exports = function(deployer) {
@@ -257,7 +260,7 @@ contract("EventTickets", accounts => {
 });
 ```
 
-#### Test code walkthrough
+#### Test code walk through
 
 * Constructor
 * Promises
@@ -266,7 +269,7 @@ contract("EventTickets", accounts => {
 
 #### Add more tests
 
-### Setting up Dapp UI
+### Setting up DApp UI
 
 #### Setting up your DApp directory
 Create new `app/` directory in your project root which will contain main app 
@@ -347,14 +350,14 @@ TBC
 * Good structured over-view, however, a bit out of date as its 2015 article:
 [A 101 Noob Intro to Programming Smart Contracts on Ethereum](https://medium.com/@ConsenSys/a-101-noob-intro-to-programming-smart-contracts-on-ethereum-695d15c1dab4)
 
+* Truffle official page and tutorials
+[Truffle](https://www.trufflesuite.com/)
+
 * Collection of dapp tutorials using open-source libraries:
 [Token Smart Contract](https://www.trufflesuite.com/tutorials/robust-smart-contracts-with-openzeppelin)
 
 * OpenZeppelin is an open source Ethereum smart contracts libraries collection
 [OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-contracts)
-
-
-Truffle
 
 Voting: 
 http://www.dappuniversity.com/articles/the-ultimate-ethereum-dapp-tutorial
