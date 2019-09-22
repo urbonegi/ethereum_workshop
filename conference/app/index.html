@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Conference DApp</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .section {
+      margin: 20px;
+    }
+    button {
+      padding: 5px 16px;
+      border-radius: 4px;
+    }
+    button#changeQuota { background-color: yellow; }
+    button#buyTicket { background-color: #98fb98; }
+    button#refundTicket { background-color: pink; }
+    button#createWallet { background-color: #add8e6; }
+    #seed {color: green;}
+  </style>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body>
+<h1>My Event DApp</h1>
+<div class="section">
+    Contract deployed at address: <div id="confAddress"></div>
+</div>
+<div class="section">
+    Organizer account address: <input type="text" id="confOrganizer" />
+</div>
+<div class="section">
+    Event Tickets Quota: <input type="text" id="confQuota" />
+    <button id="changeQuota">Change</button>
+    <span id="changeQuotaResult"></span>
+</div>
+<div class="section">
+    Number of registrants: <span id="numRegistrants">0</span>
+</div>
+
+<hr/>
+
+<div class="section">
+    <h2>Buy a Ticket</h2>
+    Ticket Price: <input type="text" id="ticketPrice" value="0.05" />
+    Buyer Address: <input type="text" id="buyerAddress" />
+    <button id="buyTicket">Buy Ticket</button>
+    <span id="buyTicketResult"></span>
+</div>
+
+<hr/>
+
+<div class="section">
+    <h2>Refund a Ticket</h2>
+    Ticket Price: <input type="text" id="refundAmount" value="0.05" />
+    Buyer Address: <input type="text" id="refBuyerAddress" />
+    <button id="refundTicket">Refund Ticket</button>
+    <span id="refundTicketResult"></span>
+</div>
+
+<hr/>
+
+
+</body>
+</html>

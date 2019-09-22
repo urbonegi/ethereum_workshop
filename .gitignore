@@ -1,3 +1,5 @@
-workshop/*
 workshop.iml
 .idea*
+conference/build*
+node_modules*
+package-lock.json
