@@ -21,9 +21,12 @@ function initializeConference() {
     });
 
     });
+}
 
-
-
+function logContractEvents() {
+    myConferenceInstance.allEvents( function(error, events) {
+        console.log(events);
+    });
 }
 
 // Check Values
@@ -46,10 +49,19 @@ function checkValues() {
 
 // Change Quota
 function changeQuota(val) {
-	myConferenceInstance.changeQuota(val, {from: organizer_account}).then(
+    if (val > 0) {
+	myConferenceInstance.changeQuota(val, {from: organizer_account})
+	.then(
 		function() {
 			return myConferenceInstance.quota.call();
-		}).then(
+		})
+    .catch(
+        function() {
+        logContractEvents();
+        console.log('Failed change quota!!!!!!')
+        return myConferenceInstance.quota.call();
+    })
+	.then(
 		function(quota) {
 			if (quota == val) {
 				var msgResult;
@@ -58,52 +70,96 @@ function changeQuota(val) {
 				msgResult = "Change failed";
 			}
 			$("#changeQuotaResult").html(msgResult);
-		});
+			return quota
+		})
+    .then(
+        function(quota) {
+            $("input#confQuota").val(quota);
+    });
+} else {
+    $("#changeQuotaResult").html("Invalid Quota value");
+    myConferenceInstance.quota.call()
+    .then(
+        function(quota) {
+            $("input#confQuota").val(quota);
+    });
+
+}
 }
 
 // buyTicket
 function buyTicket(buyerAddress, ticketPrice) {
-
-	myConferenceInstance.buyTicket({ from: buyerAddress, value: ticketPrice }).then(
-		function() {
-			return myConferenceInstance.numRegistrants.call();
-		}).then(
-		function(num) {
-			$("#numRegistrants").html(num.toNumber());
-			return myConferenceInstance.registrantsPaid.call(buyerAddress);
-		}).then(
-		function(valuePaid) {
-			var msgResult;
-			if (valuePaid.toNumber() == ticketPrice) {
-				msgResult = "Purchase successful";
-			} else {
-				msgResult = "Purchase failed";
-			}
-			$("#buyTicketResult").html(msgResult);
-		});
+    // Get initial paid amount for current buyer
+    myConferenceInstance.registrantsPaid.call(buyerAddress)
+    .then(
+        function(initialPaid) {
+            myConferenceInstance.buyTicket({ from: buyerAddress, value: ticketPrice })
+            .then(
+                function() {
+                    console.log('Buy suceessful !!!!!!!')
+                    return myConferenceInstance.numRegistrants.call();
+                })
+            .catch(
+                function() {
+                logContractEvents();
+                console.log('Failed to buy - quota reached!!!!!!')
+                return myConferenceInstance.numRegistrants.call();
+            })
+            .then(
+                function(num) {
+                    $("#numRegistrants").html(num.toNumber());
+                    return myConferenceInstance.registrantsPaid.call(buyerAddress);
+                })
+            .then(
+                function(newValuePaid) {
+                    var msgResult;
+                    console.log('Buy results', newValuePaid.toNumber(), initialPaid.toNumber(), ticketPrice)
+                    if (newValuePaid.toNumber() - initialPaid.toNumber() == ticketPrice) {
+                        msgResult = "Purchase successful";
+                    } else {
+                        msgResult = "Purchase failed";
+                    }
+                    $("#buyTicketResult").html(msgResult);
+                });
+	});
 }
 
 // refundTicket
 function refundTicket(buyerAddress, refundAmount) {
-
 		var msgResult;
-
+        console.log('In the refund logic', refundAmount)
 		myConferenceInstance.registrantsPaid.call(buyerAddress).then(
-		function(result) {
-			if (result.toNumber() == 0) {
+		function(initialPaid) {
+		    console.log('HERE!!!!!')
+            console.log(initialPaid)
+			if (initialPaid.toNumber() == 0) {
 				$("#refundTicketResult").html("Buyer is not registered - no refund!");
 			} else {
-				myConferenceInstance.refundTicket(buyerAddress,
-					refundAmount, {from: organizer_account}).then(
-					function() {
+			    console.log('Registration found')
+			    console.log(initialPaid.toNumber())
+				myConferenceInstance.refundTicket(
+				    buyerAddress, refundAmount, {from: organizer_account})
+				    .then( function() {
+					    console.log('Here after contract call')
 						return myConferenceInstance.numRegistrants.call();
-					}).then(
+					})
+                    .catch(
+                        function() {
+                        logContractEvents();
+                        console.log('Refund failed');
+                        return myConferenceInstance.numRegistrants.call();
+                    })
+					.then(
 					function(num) {
+					    console.log('Will decrease the number of participants', num.toNumber())
 						$("#numRegistrants").html(num.toNumber());
 						return myConferenceInstance.registrantsPaid.call(buyerAddress);
-					}).then(
-					function(valuePaid) {
-						if (valuePaid.toNumber() == 0) {
+					})
+					.then(
+					  function(valuePaid) {
+					  logContractEvents();
+					    console.log('Add message about refund', valuePaid.toNumber());
+						if (initialPaid.toNumber() - valuePaid.toNumber() == refundAmount) {
 							msgResult = "Refund successful";
 						} else {
 							msgResult = "Refund failed";
@@ -111,7 +167,7 @@ function refundTicket(buyerAddress, refundAmount) {
 						$("#refundTicketResult").html(msgResult);
 					});
 			}
-		});
+	    });
 }
 
 window.onload = function() {
@@ -145,7 +201,7 @@ window.onload = function() {
 	});
 
 	$("#refundTicket").click(function() {
-		var val = $("#ticketPrice").val();
+		var val = $("#refundAmount").val();
 		var buyerAddress = $("#refBuyerAddress").val();
 		refundTicket(buyerAddress, web3.toWei(val));
 	});

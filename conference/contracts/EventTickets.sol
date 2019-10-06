@@ -9,6 +9,7 @@ contract EventTickets {
 
 	event Deposit(address payable _from, uint _amount);  // log
 	event Refund(address payable _to, uint _amount); // log
+	event ValidationsPassed(address payable _sender, uint _value);
 
     // constructor
 	constructor() public payable {
@@ -19,23 +20,26 @@ contract EventTickets {
 
 	function buyTicket() public payable {
 		require(numRegistrants < quota);
-		registrantsPaid[msg.sender] = msg.value;
+		emit ValidationsPassed(msg.sender, msg.value);
+		registrantsPaid[msg.sender] += msg.value;
 		numRegistrants++;
 		emit Deposit(msg.sender, msg.value);
 	}
 
 	function changeQuota(uint newquota) public {
-	    require(msg.sender != organizer);
+	    require(msg.sender == organizer && newquota > 0);
+		emit ValidationsPassed(msg.sender, newquota);
 		quota = newquota;
 	}
 
 	function refundTicket(address payable recipient, uint amount) public {
-	    require(msg.sender != organizer);
-		if (registrantsPaid[recipient] == amount) {
+	    require(msg.sender == organizer);
+		emit ValidationsPassed(msg.sender, amount);
+		if (registrantsPaid[recipient] >= amount) {
 			if (address(this).balance >= amount) {
 				recipient.transfer(amount);
 				emit Refund(recipient, amount);
-				registrantsPaid[recipient] = 0;
+				registrantsPaid[recipient] -= amount;
 				numRegistrants--;
 			}
 		}
@@ -43,7 +47,8 @@ contract EventTickets {
 	}
 
 	function destroy() public {
-	    require(msg.sender != organizer);
+	    require(msg.sender == organizer);
+		emit ValidationsPassed(msg.sender, address(this).balance);
 	    selfdestruct(organizer);
 	}
 }

@@ -112,6 +112,7 @@ contract EventTickets {
 
 	event Deposit(address payable _from, uint _amount);  // log
 	event Refund(address payable _to, uint _amount); // log
+	event ValidationsPassed(address payable _sender, uint _value);
 
     // constructor
 	constructor() public payable {
@@ -122,23 +123,26 @@ contract EventTickets {
 
 	function buyTicket() public payable {
 		require(numRegistrants < quota);
-		registrantsPaid[msg.sender] = msg.value;
+		emit ValidationsPassed(msg.sender, msg.value);
+		registrantsPaid[msg.sender] += msg.value;
 		numRegistrants++;
 		emit Deposit(msg.sender, msg.value);
 	}
 
 	function changeQuota(uint newquota) public {
-	    require(msg.sender != organizer);
+	    require(msg.sender == organizer && newquota > 0);
+		emit ValidationsPassed(msg.sender, newquota);
 		quota = newquota;
 	}
 
 	function refundTicket(address payable recipient, uint amount) public {
-	    require(msg.sender != organizer);
-		if (registrantsPaid[recipient] == amount) {
+	    require(msg.sender == organizer);
+		emit ValidationsPassed(msg.sender, amount);
+		if (registrantsPaid[recipient] >= amount) {
 			if (address(this).balance >= amount) {
 				recipient.transfer(amount);
 				emit Refund(recipient, amount);
-				registrantsPaid[recipient] = 0;
+				registrantsPaid[recipient] -= amount;
 				numRegistrants--;
 			}
 		}
@@ -146,7 +150,8 @@ contract EventTickets {
 	}
 
 	function destroy() public {
-	    require(msg.sender != organizer);
+	    require(msg.sender == organizer);
+		emit ValidationsPassed(msg.sender, address(this).balance);
 	    selfdestruct(organizer);
 	}
 }
@@ -330,8 +335,6 @@ sudo npm run dev
 
 ### Using the DApp
 
-* Metamask and Ganache
-
 * Buy ticket
 
 * Change quota
@@ -339,6 +342,14 @@ sudo npm run dev
 * Refund ticket
 
 * Destroy contract
+
+* Metamask and Ganache
+
+* Bonus coding task - change amount paid by `buyer` from total value to a 
+list of ticket prices paid. So that in case of ticket price changes, refund 
+of the previously purchased tickets would be validated (refund amount should 
+exist in the list of purchased ticket prices) and number of attendees would 
+be adjusted correctly. For simplicity only allow 1 ticket refund at the time. 
 
 
 ## Summary 
