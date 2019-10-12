@@ -17,7 +17,7 @@
     button#changeQuota { background-color: yellow; }
     button#buyTicket { background-color: #98fb98; }
     button#refundTicket { background-color: pink; }
-    button#createWallet { background-color: #add8e6; }
+    button#destroy { background-color: #add8e6; }
     #seed {color: green;}
   </style>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -63,6 +63,14 @@
     Buyer Address: <input type="text" id="refBuyerAddress" />
     <button id="refundTicket">Refund Ticket</button>
     <span id="refundTicketResult"></span>
+</div>
+
+<hr/>
+
+<div class="section">
+    <h2>Organiser cash-out</h2>
+    <button id="destroy">Destroy contract</button>
+    <span id="destroyResults"></span>
 </div>
 
 <hr/>

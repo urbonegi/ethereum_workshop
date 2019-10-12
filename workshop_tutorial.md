@@ -1,25 +1,59 @@
 # Ethereum Smart Contract workshop
 
-## Workshop Overview
+This is an Ethereum Smart Contract tutorial which assumes no prior experience 
+with Smart Contract development. It has a step by step guide how to set-up a 
+development and testing environment for Ethereum Smart Contracts, then write and 
+test simple Smart Contract section. Finally it show how to create an example 
+web UI application that interacts with the Smart Contract.   
 
+## 0. Workshop Overview
 * Setup local development and testing environment for Ethereum Smart Contrats
 * Write simple Ethereum Smart Contract using Solidity development language
 * Write tests for the Smart Contract
 * Write very simple DApp (distributed Application) - that interacts with the 
 Smart Contract using web3.js API
 
-## Credits
-This workshop is based on a [Medium](https://medium.com) tutorial 
-called 'A 101 Noob Intro to Programming Smart Contracts on Ethereum', which 
-was released in 2015. A lot of code examples and suggested tools were out 
-of date, however, overall tutorial structure and content is very useful and 
-is worth reading. Go to [References](#References) section for a full link to the 
-tutorial.
+### What we will build?
+The final result of the workshop will be simple distributed application with UI 
+running on local node.js server and interacting with an `EventTickets` 
+Smart Contract deployed on local Blockchain network. 
+The application and Smart Contract we are going to build is a general simplified 
+event tickets purchase platform. This platform will:
+- allow anyone to buy a ticket for an event
+- allow event organiser to refund previously bought ticket
+- allow event organiser change tickets quota for an event
+- allow event organiser to collect money for the tickets bought
 
-## Before you begin
-TBC
+The difference of this DApp and traditional application is that key application 
+logic and state (number of attendees, money received for tickets, attendees 
+list etc.) will be kept in the Smart Contract. Also all payments and refunds for 
+the tickets will be done in Ethereum Blockchain network using Ether 
+crypto-currency. As there is no central application database as Blockchain 
+network is ditributed - the application is called `distributed` application 
+- DApp.
 
-## Prerequisites
+### Workshop DApp
+Below you can see a diagram of the Smart Contract development, testing and local 
+deployment environment that we will use for this workshop. Also this diagram 
+shows DApp interactions with the `EventTickets` Smart Contract deployed on 
+the local Blockchain network through 4 actions:
+- Buy ticket
+- Change quota
+- Refund Ticket
+- Self-destruct
+The `Initialise Contract` action is done on initial DApp load. All DApp 
+interactions with Blockchain network happen via `web3.js` library.
+
+![](workshop_diagram.png)
+
+### Background reading 
+You should familiarize yourself more with:
+* Blockchain
+* Ethereum Smart Contracts
+* Ethereum Virtual Machine, Ethereum Node
+* DApp (distributed Application)
+
+### Prerequisites
 * General software engineering and development understanding and some 
 experience.
 * Unix-based system would be the best option. All further environment setup 
@@ -29,11 +63,22 @@ for example the one you already have installed. If you like to try something
 new, there is an interesting one - browser based IDE - one of the top tools 
 for Smart Contract development - [Remix IDE](https://remix.ethereum.org).
 
-## Environment setup
-Installation guides bellow will assume Mac OS system. Guides for other OSs
-can be found online.
+## 1. Local Development, Testing and Deployment Environment
+Smart Contract development and testing environment consist of local Blockchain 
+network - `Ganache`, development command-line tool `Truffle` and `node.js`  
+with `web3.js` javascript library for interacting with Smart Contracts. To 
+interact with real Ethereum Blockchain network, one needs a local Ethereum 
+node. However, for the development and testing environment Ethereum node is 
+not needed, as `Ganache` has a RPC server, which allows `Truffle` and `web3.js` 
+to interact with local Blockchain network. You can optionally install `MetaMask` 
+which is local crypto-currency wallet. It will allow you to make transactions 
+between you local testing accounts. See the [diagram](#Workshop DApp) above.
 
-### Install nodejs
+### Environment setup
+Installation guides bellow will assume Mac OS system. Guides for other OSs
+can be found using the same links below and navigating to appropriate OS pages.
+
+#### Install nodejs
 Download and install latest node.js from [here](https://nodejs.org/en/download/). 
 Install nodejs by unpacking it and adding to the `PATH`.
 ```bash
@@ -41,13 +86,13 @@ $ sudo mkdir -p /usr/local/lib/nodejs
 $ sudo tar -xJvf node-v10.16.3-darwin-x64.tar -C /usr/local/lib/nodejs
 $ export PATH=/usr/local/lib/nodejs/node-v10.16.3-darwin-x64/bin:$PATH
 ```
-Check that has sucessfully installed and is ready to be used.
+Check that has successfully installed and is ready to be used.
 ```bash
 $ node -v
 $ npm version
 ```
 
-### Create your project path
+#### Create your project path
 Create your workshop tutorial directory and continue all further steps in 
 that path:
 ```bash
@@ -55,7 +100,7 @@ mkdir ~/workshop
 cd ~/workshop
 ```
 
-### Setup Truffle
+#### Setup Truffle
 Truffle is a world class development environment, testing framework and asset 
 pipeline for blockchains using the Ethereum Virtual Machine (EVM).
 Install truffle using npm:
@@ -67,20 +112,23 @@ Start truffle with default directory structure with some boilerplate code:
 $ truffle init
 ```
 
-### Setup Ganache
+#### Setup Ganache
 Ganache is a personal blockchain for Ethereum development you can use to 
 deploy contracts, develop your applications, and run tests. It is a test
 Ethereum node - safe and free to run as it creates your private testing 
 blockchain network. Download Ganache from 
 [here](https://www.trufflesuite.com/ganache). Start Ganache and create a 
-new workspace (or use Quickstart option). One started Ganache run on 
+new workspace (or use Quickstart option). Once started Ganache run on 
 address `127.0.0.1:7545`. 
 Link your truffle project (the workshop project directory created above) 
 with your Ganache Ethereum node by pressing `Settings` button at the top 
 right corner. Save the workshop workspace.
 
-### Install MetaMask
+#### Install MetaMask (optional)
 MetaMask is a self-hosted wallet to store, send and receive ETH.
+This is an optional step as it is not used in out final DApp - however, it 
+is very light tool which allows to quickly see how transactions in the 
+Ethereum Blockchain work.
 Download MetaMask Chrome extension [here](https://metamask.io/).
 When installed, press `Get Started` and select `Import Wallet` option.
 Import an account by entering the mnemonic that is displayed in Ganache and
@@ -89,13 +137,17 @@ Once in the MetaMask wallet change `Main Network` at the drop down at the
 top right corner: select `Custom RPC`. Then create new network by entering
 Ganache RPC: `http://127.0.0.1:7545`. Once saved - local testing account index 0 
 should be visible in the dashboard. You can add other accounts to the MetaMask 
-from your Ganache dev-accounts list (first two accounts are worth adding to 
-MetaMask to best demonstrate this tutorial example). 
+from your Ganache dev-accounts list. 
 
-## Smart Contract workshop
+## 2. Write the Smart Contract
+In this section we will write a simple Smart Contract code and deploy it to the 
+local Blockchain network.
 
 ### What the Smart Contract will do?
-TBC
+The Smart Contract has:
+- 4 public attributes (todo)
+- constructor function
+- 4 public functions (todo)
 
 ### EventTickets Smart Contract code
 * Create in file in contracts directory for your first Smart Contract: 
@@ -175,7 +227,7 @@ truffle deploy
 
 * Contract and account addresses explained
 
-* Selfdistruct
+* Self-destruct
 
 * Public, private and 'admin' functions
 
@@ -187,9 +239,10 @@ truffle deploy
 
 * Events
 
-### Testing Smart Contract
+## 3. Testing Smart Contract
+In this section - todo
 
-#### Setup test environment
+### Setup test environment
 
 Update `truffle-config.js` to have development and test networks:
 
@@ -216,8 +269,7 @@ Run tests using truffle:
 ```bash
 truffle test
 ```
-#### First Smart Contract Test
-
+### First Smart Contract Test
 Most popular languages to write Smart Contract tests in are solidity and 
 javascript. In this workshop we will use javascript based tests. 
 Some more good examples can be found online for both automated tests: 
@@ -265,18 +317,20 @@ contract("EventTickets", accounts => {
 });
 ```
 
-#### Test code walk through
-
+### Test code walk through
+todo
 * Constructor
 * Promises
 * Accessing variables values
 * Assert
 
-#### Add more tests
+### Add more tests
+From the repo - todo
 
-### Setting up DApp UI
+## 4. Setting up DApp UI
+In this section - todo
 
-#### Setting up your DApp directory
+### Setting up your DApp directory
 Create new `app/` directory in your project root which will contain main app 
 HTML and javascript files: `index.html` and `app.js`. You will also need 
 `web3.js` and `jquery.js` libraries. Full `app/` should be copied from the 
@@ -319,7 +373,7 @@ below:
 }
 ```
 
-#### Serving the DApp
+### Serving the DApp
 Before serving the DApp, `lite-server` npm dependency have to be installed. 
 Once it is installed, `package-lock.json` file and `node_modules` directory 
 will be automatically created in your project root.
@@ -334,7 +388,7 @@ sudo npm run dev
 ```
 
 ### Using the DApp
-
+todo
 * Buy ticket
 
 * Change quota
@@ -345,17 +399,26 @@ sudo npm run dev
 
 * Metamask and Ganache
 
+
+## 5. Bonus Tasks
+todo
+* Add more Tests.
+* Not allow to change quota to smaller than current number of registrants.
 * Bonus coding task - change amount paid by `buyer` from total value to a 
 list of ticket prices paid. So that in case of ticket price changes, refund 
 of the previously purchased tickets would be validated (refund amount should 
 exist in the list of purchased ticket prices) and number of attendees would 
 be adjusted correctly. For simplicity only allow 1 ticket refund at the time. 
 
+## 6. Concussions
+todo
 
-## Summary 
-
-TBC
-
+## Credits
+This workshop is based on a [Medium](https://medium.com) tutorial 
+called 'A 101 Noob Intro to Programming Smart Contracts on Ethereum'. A lot of 
+code examples and suggested tools were out of date, however, overall tutorial 
+structure and content is very useful and is worth reading. 
+Go to [References](#References) section for a full link to this tutorial.
 
 ## References
 * Good structured over-view, however, a bit out of date as its 2015 article:
@@ -370,9 +433,10 @@ TBC
 * OpenZeppelin is an open source Ethereum smart contracts libraries collection
 [OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-contracts)
 
-Voting: 
-http://www.dappuniversity.com/articles/the-ultimate-ethereum-dapp-tutorial
+* Read about Blockchain - 
+[Blockchain Explained](https://www.bitdegree.org/tutorials/blockchain-explained/)
 
+* Read about Smart Contracts - 
+[What is a Smart Contract](https://www.bitdegree.org/tutorials/what-is-a-smart-contract/)
 
-Windows OS:
-https://codeburst.io/build-your-first-ethereum-smart-contract-with-solidity-tutorial-94171d6b1c4b
+* Read about DApps

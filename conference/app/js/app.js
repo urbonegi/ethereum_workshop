@@ -47,6 +47,33 @@ function checkValues() {
 	});
 }
 
+// Destroy
+function destroy() {
+    console.log("Destroying contract");
+	myConferenceInstance.destroy({from: organizer_account})
+	.then(
+		function() {
+			return web3.eth.getBalance(myConferenceInstance.address);
+		})
+    .catch(
+        function() {
+        logContractEvents();
+        console.log('Failed to self-destruct - can only be initialized by organiser!!!!!!')
+        return web3.eth.getBalance(myConferenceInstance.address);
+    })
+	.then(
+		function(contract_balance) {
+			if (contract_balance == 0) {
+				var msgResult;
+				msgResult = "Contract destroyed";
+			} else {
+				msgResult = "Destroy failed: contract still has balance";
+			}
+			$("#destroyResults").html(msgResult);
+			return
+		});
+}
+
 // Change Quota
 function changeQuota(val) {
     if (val > 0) {
@@ -205,6 +232,10 @@ window.onload = function() {
 		var buyerAddress = $("#refBuyerAddress").val();
 		refundTicket(buyerAddress, web3.toWei(val));
 	});
+
+    $("#destroy").click(function() {
+        destroy();
+    });
 
 	// Set value of wallet to accounts[1]
 	$("#buyerAddress").val(buyer_account);
