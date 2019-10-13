@@ -11,15 +11,18 @@ function initializeConference() {
     EventTickets.setProvider(web3Provider);
     console.log('Here');
     console.log('Event Tickets', EventTickets);
-    EventTickets.new({from: organizer_account, gas: 3141592}).then(
-    function(conf) {
-        console.log('Event Tickets contract instance', conf);
-        myConferenceInstance = conf;
+    EventTickets.deployed().then(
+    function(instance) {
+        console.log('Event Tickets contract instance', instance);
+        myConferenceInstance = instance;
         $("#confAddress").html(myConferenceInstance.address);
-        console.log('The contract address', conf.address);
+        console.log('The contract address', instance.address);
         checkValues();
+    }).catch(
+        function(err) {
+            console.log('Contract is not deployed???');
+            console.log(err);
     });
-
     });
 }
 
@@ -205,7 +208,7 @@ window.onload = function() {
         web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
     }
     web3 = new Web3(web3Provider);
-
+    console.log(web3);
     console.log('Getting development accounts');
     accounts = web3.eth.accounts;
     organizer_account = accounts[0];

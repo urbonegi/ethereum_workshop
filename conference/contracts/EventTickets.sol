@@ -9,7 +9,7 @@ contract EventTickets {
 
 	event Deposit(address payable _from, uint _amount);  // log
 	event Refund(address payable _to, uint _amount); // log
-	event ValidationsPassed(address payable _sender, uint _value);
+	event ValidationsPassed(address payable _sender, uint _value); // log
 
     // constructor
 	constructor() public payable {

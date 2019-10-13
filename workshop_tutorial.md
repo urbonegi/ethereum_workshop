@@ -29,8 +29,8 @@ logic and state (number of attendees, money received for tickets, attendees
 list etc.) will be kept in the Smart Contract. Also all payments and refunds for 
 the tickets will be done in Ethereum Blockchain network using Ether 
 crypto-currency. As there is no central application database as Blockchain 
-network is ditributed - the application is called `distributed` application 
-- DApp.
+network is ditributed - the application is called `distributed` application - 
+DApp.
 
 ### Workshop DApp
 Below you can see a diagram of the Smart Contract development, testing and local 
@@ -145,9 +145,9 @@ local Blockchain network.
 
 ### What the Smart Contract will do?
 The Smart Contract has:
-- 4 public attributes (todo)
+- 4 public attributes (organizer, registrantsPaid, numRegistrants and quota)
 - constructor function
-- 4 public functions (todo)
+- 4 public functions (buyTicket(), changeQuota(), refundTicket() and destroy())
 
 ### EventTickets Smart Contract code
 * Create in file in contracts directory for your first Smart Contract: 
@@ -223,24 +223,42 @@ module.exports = function(deployer) {
 truffle deploy
 ```
 ### Understanding the `EventTickets` Smart Contract code
-* Solidity version
+* Solidity version - `pragma solidity ^0.5.8`, where `^` means that compiler 
+also must be < version than `0.6.0`.
 
-* Contract and account addresses explained
+* Once deployed contracts also have addresses, similarly to user accounts
 
-* Self-destruct
+* Events - contract logs - helpful when debugging a contract
 
-* Public, private and 'admin' functions
+* Public, private functions
 
-* Payable functions (msg.sender, msg.value)
+* The `require()` usage in 'admin' functions
 
-* Storing state in Smart Contracts
+* Payable functions always receive msg.sender and msg.value agruments, these 
+can be passed as `special` arguments - silence to the payable function:
+`.buyTicket({ from: buyerAddress, value: ticketPrice })`
 
-* Gas limit and Smart Contract 'price'
+* Selfdestruct: sends all current Smart Contract balance to given addess 
+(organizer), deletes all data and storage. Note: once destroy - contract cannot 
+be `redeployed` - also if one sends money to the destroy contract - these funds 
+are lost forever. After destroy can deploy new contract, creating new migration 
+file, see [FAQ](#FAQ) section below.
 
-* Events
+* Storing state in Smart Contracts - all attribute values are stored in 
+Blockchain - in Ethereum Virtual Machine.
+
+* Gas price and limit: gas - is a measure of computational power needed to 
+deploy or execute Smart Contract. The actual price in Eth is calculated by 
+multiplying gas used and gas price (attribute to change), read more about this 
+in [FAQ](#FAQ) section below.
+
+* Smart Contract 'price': the contract deployment (creation), 
+also each contract call (function execution) cost the caller some `money`. This 
+price is take from the contract caller address `msg.sender`. 
 
 ## 3. Testing Smart Contract
-In this section - todo
+In this section - we will setup testing network in truffle and write couple of 
+Smart Contract tests. We will run these tests using the `truffle` tool.
 
 ### Setup test environment
 
@@ -318,17 +336,23 @@ contract("EventTickets", accounts => {
 ```
 
 ### Test code walk through
-todo
-* Constructor
-* Promises
-* Accessing variables values
-* Assert
+
+* Usage of `contract()` will ensure the Smart Contract is redeployed and tests 
+run on clean state.
+* Some libraries and objects are available in tests code out of the box: `web3`, 
+`artifacts`, `assert`.
+* Promises - all web3 functions calls are async. 
+* Accessing variables values: usage of `call()`
 
 ### Add more tests
-From the repo - todo
+From the repo - you can find them [here](conference/test/EventTickets.js).
 
 ## 4. Setting up DApp UI
-In this section - todo
+In this section - we will create decentralized application using the Smart 
+Contract from previous steps and very simple javascript frontend application. 
+We will run this application server. This will allow us to create User 
+Interface for the Smart Contract that we just created and sell ticket to 
+our event. 
 
 ### Setting up your DApp directory
 Create new `app/` directory in your project root which will contain main app 
@@ -388,30 +412,107 @@ sudo npm run dev
 ```
 
 ### Using the DApp
-todo
-* Buy ticket
 
-* Change quota
+* Buy ticket: one can buy multiple tickets from the same account, change 
+ticket price per ticket. Buy one ticket at the time. Cannot buy more tickets 
+if quota is reached.
 
-* Refund ticket
+* Refund ticket: only accounts that previously bought tickets - can be refunded, 
+one cannot refund more than the account paid. Change refund price in sync with 
+ticket price - else number of registrants adjusted incorrect (there is a 
+[Bonus](#Bonus) task to fix this).
 
-* Destroy contract
+* Change quota: change quota and try buying tickets above the quota.
 
-* Metamask and Ganache
+* Ganache: observe number of transactions, blocks changing when buying tickets. 
+Go to `Contracts` and check `EventTickets` contract balance, number of 
+transactions, other attributes.
+
+* Restart DApp (kill in serve process and start again): observe state (number 
+of attendees stays the same).
+
+* Start multiple DApp servers - observe how state is shared between those: if 
+you buy ticket in one DApp instance, number of registrants increases in this and 
+another instance of DApp (you might need to refresh the page).
+
+* Destroy contract: once destroyed all contract balance is transferred to the 
+organizer address (check the balance). Read more about selfdestruct in the 
+[FAQ](#FAQ) section below.
 
 
 ## 5. Bonus Tasks
-todo
-* Add more Tests.
-* Not allow to change quota to smaller than current number of registrants.
-* Bonus coding task - change amount paid by `buyer` from total value to a 
-list of ticket prices paid. So that in case of ticket price changes, refund 
+Below you can find few bonus tasks that have no `copy-paste` solution in the 
+repo. Following current code examples and `googling` if needed, you could:
+* Add more Tests to the [EventTickets.js](conference/test/EventTickets.js).
+* Not allow to change quota to smaller than current number of registrants 
+(suggested implementation - extend `requires` in the `changeQuota` function of 
+the Smart Contract).
+* Make organiser account value into an input field rather than hardcoded in the 
+`app.js`. Also deploy new contract instance with organiser account being some 
+other account from the test accounts list in `Ganache` (not default first one).
+* Change amount paid by `buyerAddress` from total value to a 
+list of ticket prices paid. Then in case of ticket price changes, refund 
 of the previously purchased tickets would be validated (refund amount should 
-exist in the list of purchased ticket prices) and number of attendees would 
-be adjusted correctly. For simplicity only allow 1 ticket refund at the time. 
+exist in the list of purchased ticket prices). Also number of attendees would 
+then be adjusted correctly. For simplicity only allow 1 ticket refund per click. 
 
 ## 6. Concussions
-todo
+This tutorial should have demonstrated DApp with Smart Contract deployed on a 
+Blockchain capabities and benefits when creating User facing applications and 
+processes automation. Now go and code a `Crowdsales` contract... just kidding, 
+go and create something beautiful and useful instead.
+
+## FAQs
+* **How the number of blocks related to number of transactions?** 
+
+1 transaction is in 1 Blockchain block
+* **How to `recreate` contract after self-destruct?**
+
+Contract cannot be `recreated`, one can create new contract by defining new 
+migration file in `migrations` directory. 
+* **When contracts are called who and when pays for these contract calls?**
+ 
+The caller - `msg.sender` - account pays for the contract call. Price is gas 
+used multiplied by gas price (in `wei` - can be seen in `Ganache` dashboard).
+* **Is contract state kept between application restarts?** 
+
+Yes, if DApp access the deployed contract instance from Blockchain by using 
+this construct - same Smart Contract instance is retrieved:
+```javascript
+    $.getJSON('EventTickets.json', function(data) {
+    var EventTicketsArtifact = data;
+    EventTickets = TruffleContract(EventTicketsArtifact);
+    // Set the provider for our contract.
+    EventTickets.setProvider(web3Provider);
+    EventTickets.deployed().then(
+       function(instance) {
+           console.log('Smart Contract Instance', instance);
+    ...
+``` 
+The state (number of registrants, contract balance, buyers addresses etc.) 
+lives in blockchain and is retained between decentralized application restarts 
+and can be served from multiple application nodes.
+* **How one can set some other account to be organisers account, rather than first 
+from `Ganache` list?**
+
+Just sent different account index in the migration file, for example if you want 
+second account to be `organisers` account do this:
+```javascript
+module.exports = function(deployer, network, accounts) {
+  // Change accounts id if want to set organiser as some other account
+  deployer.deploy(EventTickets, {from: accounts[1]});
+};
+```
+Note: do not forget to change `organisers_account` constant in the `app.js`!
+* **Which one of the development tools is Ethereum Virtual Machine, Ethereum Node 
+and Ethereum Blockchain network.** 
+
+The `Ganache` is private Ethereum Blockchain network. In the workshop setup 
+there is no separate Ethereum Node, as `Ganache` comes with RPC server which 
+plays Ethereum Node role. The `Ganache` also executes Smart Contracts, 
+therefore is implements Ethereum Virtual Machine. The truffle is a tool 
+that interacts with Ethereum Virtual Machine and allows easy contract: 
+compilation, deployment, testing and migrations.
 
 ## Credits
 This workshop is based on a [Medium](https://medium.com) tutorial 
@@ -439,4 +540,9 @@ Go to [References](#References) section for a full link to this tutorial.
 * Read about Smart Contracts - 
 [What is a Smart Contract](https://www.bitdegree.org/tutorials/what-is-a-smart-contract/)
 
-* Read about DApps
+* Read or watch videos about decentralized applications - 
+[DApps](https://blockgeeks.com/guides/dapps/)
+
+* Ether converter [online](https://etherconverter.online)
+
+* Ethereum gas price - [gas station](https://ethgasstation.info)
