@@ -242,7 +242,7 @@ can be passed as `special` arguments - silence to the payable function:
 (organizer), deletes all data and storage. Note: once destroy - contract cannot 
 be `redeployed` - also if one sends money to the destroy contract - these funds 
 are lost forever. After destroy can deploy new contract, creating new migration 
-file, see [FAQ](#FAQ) section below.
+file, see [FAQ](#FAQs) section below.
 
 * Storing state in Smart Contracts - all attribute values are stored in 
 Blockchain - in Ethereum Virtual Machine.
@@ -250,7 +250,7 @@ Blockchain - in Ethereum Virtual Machine.
 * Gas price and limit: gas - is a measure of computational power needed to 
 deploy or execute Smart Contract. The actual price in Eth is calculated by 
 multiplying gas used and gas price (attribute to change), read more about this 
-in [FAQ](#FAQ) section below.
+in [FAQ](#FAQs) section below.
 
 * Smart Contract 'price': the contract deployment (creation), 
 also each contract call (function execution) cost the caller some `money`. This 
@@ -345,7 +345,7 @@ run on clean state.
 * Accessing variables values: usage of `call()`
 
 ### Add more tests
-From the repo - you can find them [here](conference/test/EventTickets.js).
+From the repo - you can find them [here](conference/test/eventtickets.js).
 
 ## 4. Setting up DApp UI
 In this section - we will create decentralized application using the Smart 
@@ -357,8 +357,8 @@ our event.
 ### Setting up your DApp directory
 Create new `app/` directory in your project root which will contain main app 
 HTML and javascript files: `index.html` and `app.js`. You will also need 
-`web3.js` and `jquery.js` libraries. Full `app/` should be copied from the 
-tutorial [Github](https://github.com/urbonegi/ethereum_workshop) page. 
+`web3.js` and `jquery.js` libraries. Full [app/](conference/app) directory should be 
+copied from the tutorial code repo.
 
 Create `bs-config.json` file that will have list of directories with your 
 DApp UI code files. File content (Note: the directories in this file
@@ -437,13 +437,13 @@ another instance of DApp (you might need to refresh the page).
 
 * Destroy contract: once destroyed all contract balance is transferred to the 
 organizer address (check the balance). Read more about selfdestruct in the 
-[FAQ](#FAQ) section below.
+[FAQ](#FAQs) section below.
 
 
 ## 5. Bonus Tasks
 Below you can find few bonus tasks that have no `copy-paste` solution in the 
 repo. Following current code examples and `googling` if needed, you could:
-* Add more Tests to the [EventTickets.js](conference/test/EventTickets.js).
+* Add more Tests to the [EventTickets.js](conference/test/eventtickets.js).
 * Not allow to change quota to smaller than current number of registrants 
 (suggested implementation - extend `requires` in the `changeQuota` function of 
 the Smart Contract).
