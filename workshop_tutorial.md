@@ -96,8 +96,8 @@ $ npm version
 Create your workshop tutorial directory and continue all further steps in 
 that path:
 ```bash
-mkdir ~/workshop
-cd ~/workshop
+$ mkdir ~/workshop
+$ cd ~/workshop
 ```
 
 #### Setup Truffle
@@ -220,7 +220,7 @@ module.exports = function(deployer) {
 ```
 * Compile and migrate new Smart Contract; or simply 'deploy':
 ```bash
-truffle deploy
+$ truffle deploy
 ```
 ### Understanding the `EventTickets` Smart Contract code
 * Solidity version - `pragma solidity ^0.5.8`, where `^` means that compiler 
@@ -285,7 +285,7 @@ module.exports = {
 Run tests using truffle:
 
 ```bash
-truffle test
+$ truffle test
 ```
 ### First Smart Contract Test
 Most popular languages to write Smart Contract tests in are solidity and 
@@ -403,12 +403,12 @@ Once it is installed, `package-lock.json` file and `node_modules` directory
 will be automatically created in your project root.
 
 ```bash
-sudo npm install --save-dev lite-server
+$ npm install --save-dev lite-server
 ```
 
 Serve the DApp website:
 ```bash
-sudo npm run dev
+$ npm run dev
 ```
 
 ### Using the DApp
