@@ -155,7 +155,7 @@ The Smart Contract has:
 - constructor function
 - 4 public functions (buyTicket(), changeQuota(), refundTicket() and destroy())
 
-* Create in file in contracts directory for your first Smart Contract: 
+Create in file in contracts directory for your first Smart Contract: 
 `contracts/EventTickets.sol`. Type in code as follows:
 ```solidity
 pragma solidity ^0.5.8;
@@ -213,7 +213,7 @@ contract EventTickets {
 	}
 }
 ```
-* Create migrations file in migrations directory: 
+Create migrations file in migrations directory: 
 `migrations/2_eventtickets_migration.js`. Type in the code as follows:
 ```bash
 const EventTickets = artifacts.require("EventTickets");
@@ -224,7 +224,7 @@ module.exports = function(deployer, network, accounts) {
 };
 
 ```
-* Compile and migrate new Smart Contract; or simply 'deploy':
+Compile and migrate new Smart Contract; or simply 'deploy':
 ```bash
 $ truffle deploy
 ```
