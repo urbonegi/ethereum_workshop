@@ -69,7 +69,7 @@ for example the one you already have installed. If you like to try something
 new, there is an interesting one - browser based IDE - one of the top tools 
 for Smart Contract development - [Remix IDE](https://remix.ethereum.org).
 
-## 1. Local Development, Testing and Deployment Environment
+## 1. Set up local Development, Testing and Deployment Environment
 Smart Contract development and testing environment consist of local Blockchain 
 network - `Ganache`, development command-line tool `Truffle` and `node.js` 
 with `web3.js` javascript library for interacting with Smart Contracts. To 
@@ -264,7 +264,7 @@ Gas limit can be set when calling contract functions - if contract call is more
 `expensive` than set limit - contract will not be called. Read more about this 
 in [FAQ](#FAQs) section below.
 
-## 3. Testing Smart Contract
+## 3. Test Smart Contract
 In this section - we will setup testing network in truffle and write couple of 
 Smart Contract tests. We will run these tests using the `truffle` tool.
 
@@ -358,7 +358,7 @@ Contract.
 Add more tests from the repo - you can find them 
 [here](conference/test/eventtickets.js).
 
-## 4. Setting up DApp UI
+## 4. Set up DApp UI
 In this section - we will create decentralized application using the Smart 
 Contract from previous steps and very simple javascript frontend application. 
 We will run this application server. This will allow us to create User 
