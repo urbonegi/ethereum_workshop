@@ -48,7 +48,7 @@ interactions with Blockchain network happen via `web3.js` library.
 Note this diagram also shows 3 main development tools and applications we will 
 use in the workshop: `Truffle`, `Ganache` and `Metamask`. These will be covered 
 in section 
-[1. Local Development, Testing and Deployment Environment](1.-Local-Development,-Testing-and-Deployment-Environment)
+[1. Local Development, Testing and Deployment Environment](#1-set-up-local-development-testing-and-deployment-environment)
 below.
 
 ![](workshop_diagram.png)
@@ -431,7 +431,7 @@ ticket price per ticket. One cannot buy more tickets if quota is reached.
 * Refund ticket: only accounts that previously bought tickets - can be refunded, 
 one cannot refund more than the account paid. Change refund price in sync with 
 ticket price - else number of registrants adjusted incorrect (there is a 
-[Bonus](#5.-Bonus-Tasks) task to improve this).
+[Bonus](#5-bonus-tasks) task to improve this).
 
 * Change quota: change quota and try buying tickets above the quota.
 
