@@ -47,7 +47,8 @@ interactions with Blockchain network happen via `web3.js` library.
 
 Note this diagram also shows 3 main development tools and applications we will 
 use in the workshop: `Truffle`, `Ganache` and `Metamask`. These will be covered 
-in section '1. Local Development, Testing and Deployment Environment'
+in section 
+[1. Local Development, Testing and Deployment Environment](1.-Local-Development,-Testing-and-Deployment-Environment)
 below.
 
 ![](workshop_diagram.png)
@@ -78,7 +79,7 @@ node. However, for the development and testing environment Ethereum node is
 not needed, as `Ganache` has a RPC server, which allows `Truffle` and `web3.js` 
 to interact with local Blockchain network. You can optionally install `MetaMask` 
 which is local crypto-currency wallet. It will allow you to make transactions 
-between you local testing accounts. See the [diagram](#Workshop DApp) above.
+between you local testing accounts. See the [diagram](#Workshop-DApp) above.
 
 ### Environment setup
 Installation guides bellow will assume Mac OS system. Guides for other OSs
@@ -430,7 +431,7 @@ ticket price per ticket. One cannot buy more tickets if quota is reached.
 * Refund ticket: only accounts that previously bought tickets - can be refunded, 
 one cannot refund more than the account paid. Change refund price in sync with 
 ticket price - else number of registrants adjusted incorrect (there is a 
-[Bonus](#Bonus) task to improve this).
+[Bonus](#5.-Bonus-Tasks) task to improve this).
 
 * Change quota: change quota and try buying tickets above the quota.
 
