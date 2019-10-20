@@ -358,7 +358,7 @@ Contract.
 
 ### Add more tests
 Add more tests from the repo - you can find them 
-[here](conference/test/eventtickets.js).
+[here](workshop/test/eventtickets.js).
 
 ## 4. Set up DApp UI
 In this section - we will create decentralized application using the Smart 
@@ -370,7 +370,7 @@ our event.
 ### Setting up your DApp directory
 Create new `app/` directory in your project root which will contain main app 
 HTML and javascript files: `index.html` and `app.js`. You will also need 
-`web3.js` and `jquery.js` libraries. Full [app/](conference/app) directory should be 
+`web3.js` and `jquery.js` libraries. Full [app/](workshop/app) directory should be 
 copied from the tutorial code repo.
 
 Create `bs-config.json` file that will have list of directories with your 
@@ -454,7 +454,7 @@ selfdestruct in the [FAQ](#FAQs) section below.
 ## 5. Bonus Tasks
 Below you can find few bonus tasks that have no `copy-paste` solution in the 
 repo. Following current code examples and `googling` if needed, you could:
-* Add more Tests to the [EventTickets.js](conference/test/eventtickets.js).
+* Add more Tests to the [EventTickets.js](workshop/test/eventtickets.js).
 * Not allow to change quota to smaller than current number of registrants 
 (suggested implementation - extend `requires` in the `changeQuota` function of 
 the Smart Contract).
