@@ -1,13 +1,14 @@
 # Ethereum Smart Contract workshop
 
-This is an Ethereum Smart Contract tutorial which assumes no prior experience 
-with Smart Contract development. It has a step by step guide how to set-up a 
-development and testing environment for Ethereum Smart Contracts, then a section
-on writing and testing simple Smart Contract. Finally it shows how to create an
-example web UI application that interacts with the Smart Contract.   
+This is an Ethereum Smart Contract tutorial which requires no prior experience 
+with Smart Contract development, as all the tutorial steps are detailed and 
+explained. It has a step by step guide how to set-up a development and testing 
+environment for Ethereum Smart Contracts, then a section on writing and testing 
+simple Smart Contract. Finally it shows how to create an example web UI 
+application that interacts with the Smart Contract.   
 
-## 0. Workshop Overview
-* Setup local development and testing environment for Ethereum Smart Contrats
+## Workshop Overview
+* Setup local development and testing environment for Ethereum Smart Contracts
 * Write simple Ethereum Smart Contract using Solidity development language
 * Write tests for the Smart Contract
 * Write very simple DApp (distributed Application) - that interacts with the 
@@ -466,7 +467,7 @@ of the previously purchased tickets would be validated (refund amount should
 exist in the list of purchased ticket prices). Also number of attendees would 
 then be adjusted correctly. For simplicity only allow 1 ticket refund per click. 
 
-## 6. Concussions
+## 6. Conclusions
 This tutorial should have demonstrated a DApp with Smart Contract deployed on a 
 Blockchain capabilities and benefits when creating User facing applications and 
 processes automation. Now go and code a `Crowdsales` contract... no, just kidding, 
@@ -554,6 +555,12 @@ Go to [References](#References) section for a full link to this tutorial.
 
 * Read about Smart Contracts - 
 [What is a Smart Contract](https://www.bitdegree.org/tutorials/what-is-a-smart-contract/)
+
+* Read about Ethereum - 
+[What is Ethereum?](https://www.coindesk.com/information/what-is-ethereum) and 
+[How Ethereum works?](https://www.coindesk.com/information/how-ethereum-works)
+
+* Learn what is DApp - [What is DApp?](https://www.coindesk.com/information/what-is-a-decentralized-application-dapp)
 
 * Read or watch videos about decentralized applications - 
 [DApps](https://blockgeeks.com/guides/dapps/)
