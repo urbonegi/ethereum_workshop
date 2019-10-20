@@ -358,7 +358,7 @@ Contract.
 
 ### Add more tests
 Add more tests from the repo - you can find them 
-[here](workshop/test/eventtickets.js).
+[here](workshop/test/EventTickets.js).
 
 ## 4. Set up DApp UI
 In this section - we will create decentralized application using the Smart 
@@ -454,7 +454,7 @@ selfdestruct in the [FAQ](#FAQs) section below.
 ## 5. Bonus Tasks
 Below you can find few bonus tasks that have no `copy-paste` solution in the 
 repo. Following current code examples and `googling` if needed, you could:
-* Add more Tests to the [EventTickets.js](workshop/test/eventtickets.js).
+* Add more Tests to the [EventTickets.js](workshop/test/EventTickets.js).
 * Not allow to change quota to smaller than current number of registrants 
 (suggested implementation - extend `requires` in the `changeQuota` function of 
 the Smart Contract).
