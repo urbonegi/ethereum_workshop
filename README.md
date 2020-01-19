@@ -89,17 +89,20 @@ can be found using the same links below and navigating to appropriate OS pages.
 #### Install nodejs
 Download and install latest node.js from [here](https://nodejs.org/en/download/). 
 Install nodejs by unpacking it and adding to the `PATH`.
-Note: if you installed node.js on you Mac OS like this, you would have to call 
-all node commands via sudo. Alternatively use Homebrew to install node.js.
 ```bash
 $ sudo mkdir -p /usr/local/lib/nodejs
 $ sudo tar -xJvf node-v10.16.3-darwin-x64.tar -C /usr/local/lib/nodejs
 $ export PATH=/usr/local/lib/nodejs/node-v10.16.3-darwin-x64/bin:$PATH
 ```
-Check that has successfully installed and is ready to be used.
+Note: Make npm and node commands accessible for your user (without sudo). Run 
 ```bash
-$ sudo node -v
-$ sudo npm version
+$ mkdir ~/.npm-packages
+$ npm config set prefix ~/.npm-packages
+```
+Finally, verify the install:
+```bash
+$ node -v
+$ npm version
 ```
 Download older (10.16.3) version of node.js [here](https://nodejs.org/dist/v10.16.3/).
 
@@ -116,11 +119,11 @@ Truffle is a world class development environment, testing framework and asset
 pipeline for blockchains using the Ethereum Virtual Machine (EVM).
 Install truffle using npm:
 ```bash
-$ sudo npm install -g truffle@5.1.0
+$ npm install -g truffle@5.1.0
 ```
 Start truffle with default directory structure with some boilerplate code:
 ```bash
-$ sudo truffle init
+$ truffle init
 ```
 
 #### Setup Ganache
@@ -233,7 +236,7 @@ module.exports = function(deployer, network, accounts) {
 ```
 Compile and migrate new Smart Contract; or simply 'deploy':
 ```bash
-$ sudo truffle deploy
+$ truffle deploy
 ```
 ### Understanding the `EventTickets` Smart Contract code
 * Solidity version: `pragma solidity ^0.5.8`, where `^` means that compiler 
@@ -300,7 +303,7 @@ module.exports = {
 Run tests using truffle:
 
 ```bash
-$ sudo truffle test
+$ truffle test
 ```
 ### First Smart Contract Test
 Most popular languages to write Smart Contract tests in are solidity and 
@@ -421,12 +424,12 @@ Once it is installed, `package-lock.json` file and `node_modules` directory
 will be automatically created in your project root.
 
 ```bash
-$ sudo npm install --save-dev lite-server
+$ npm install --save-dev lite-server
 ```
 
 Serve the DApp website:
 ```bash
-$ sudo npm run dev
+$ npm run dev
 ```
 
 ### Using the DApp
