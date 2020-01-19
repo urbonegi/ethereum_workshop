@@ -89,6 +89,8 @@ can be found using the same links below and navigating to appropriate OS pages.
 #### Install nodejs
 Download and install latest node.js from [here](https://nodejs.org/en/download/). 
 Install nodejs by unpacking it and adding to the `PATH`.
+Note: if you installed node.js on you Mac OS like this, you would have to call 
+all node commands via sudo. Alternatively use Homebrew to install node.js.
 ```bash
 $ sudo mkdir -p /usr/local/lib/nodejs
 $ sudo tar -xJvf node-v10.16.3-darwin-x64.tar -C /usr/local/lib/nodejs
@@ -96,9 +98,10 @@ $ export PATH=/usr/local/lib/nodejs/node-v10.16.3-darwin-x64/bin:$PATH
 ```
 Check that has successfully installed and is ready to be used.
 ```bash
-$ node -v
-$ npm version
+$ sudo node -v
+$ sudo npm version
 ```
+Download older (10.16.3) version of node.js [here](https://nodejs.org/dist/v10.16.3/).
 
 #### Create your project path
 Create your workshop tutorial directory and continue all further steps in 
@@ -113,11 +116,11 @@ Truffle is a world class development environment, testing framework and asset
 pipeline for blockchains using the Ethereum Virtual Machine (EVM).
 Install truffle using npm:
 ```bash
-$ npm install -g truffle
+$ sudo npm install -g truffle@5.1.0
 ```
 Start truffle with default directory structure with some boilerplate code:
 ```bash
-$ truffle init
+$ sudo truffle init
 ```
 
 #### Setup Ganache
@@ -125,7 +128,9 @@ Ganache is a personal blockchain for Ethereum development you can use to
 deploy contracts, develop your applications, and run tests. It is a test
 Ethereum node - safe and free to run as it creates your private testing 
 blockchain network. Download Ganache from 
-[here](https://www.trufflesuite.com/ganache). Start Ganache and create a 
+[here](https://www.trufflesuite.com/ganache). 
+Old version (2.1.0) of Ganache can be downloaded from [here](https://github.com/trufflesuite/ganache/releases/tag/v2.1.0).
+Start Ganache and create a 
 new workspace (or use Quickstart option). Once started Ganache run on 
 address `127.0.0.1:7545`. 
 Link your truffle project (the workshop project directory created above) 
@@ -228,7 +233,7 @@ module.exports = function(deployer, network, accounts) {
 ```
 Compile and migrate new Smart Contract; or simply 'deploy':
 ```bash
-$ truffle deploy
+$ sudo truffle deploy
 ```
 ### Understanding the `EventTickets` Smart Contract code
 * Solidity version: `pragma solidity ^0.5.8`, where `^` means that compiler 
@@ -295,7 +300,7 @@ module.exports = {
 Run tests using truffle:
 
 ```bash
-$ truffle test
+$ sudo truffle test
 ```
 ### First Smart Contract Test
 Most popular languages to write Smart Contract tests in are solidity and 
@@ -416,12 +421,12 @@ Once it is installed, `package-lock.json` file and `node_modules` directory
 will be automatically created in your project root.
 
 ```bash
-$ npm install --save-dev lite-server
+$ sudo npm install --save-dev lite-server
 ```
 
 Serve the DApp website:
 ```bash
-$ npm run dev
+$ sudo npm run dev
 ```
 
 ### Using the DApp
